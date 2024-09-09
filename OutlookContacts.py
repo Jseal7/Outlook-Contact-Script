@@ -1,4 +1,3 @@
-import os
 import tkinter.font
 import win32com.client
 from openpyxl import Workbook, load_workbook
@@ -138,7 +137,4 @@ def makeGui():
 
 
 if __name__ == "__main__":
-    home_dir = os.path.expanduser("~")
-    desktop_path = os.path.join(home_dir, "OneDrive", "Desktop")
-    os.chdir(desktop_path)
     makeGui()
