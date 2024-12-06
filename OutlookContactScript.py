@@ -94,14 +94,20 @@ def makeGui():
 
     frame = tkinter.Frame(guiWindow, padx=20, pady=30)
     frame.pack(padx=5, pady=5)
-    frame.configure(background='#000000')
+    frame.configure(background='#fff')
 
-    label = tkinter.Label(frame, text="Contact Functions", background="#000000", fg='#fff', font=('Tahoma', 15, 'bold'))
-    label.grid(row=0, column=0, ipadx=10, pady=15)
+    label = tkinter.Label(frame, text="Contact Functions", background="#fff", fg='#000000', font=('Tahoma', 15, 'bold'))
+    label.grid(row=0, column=0, ipadx=2, pady=15, sticky=W)
+
+    photo = PhotoImage(file = r"C:/Users/jseal/OneDrive\Desktop/Outlook-Contact-Script/images/contact.png")
+    photoimage = photo.subsample(5, 5)  
 
     excelToOutlook = tkinter.Button(
         frame,
-        text="Make Contacts",
+        image = photoimage,
+        width = 40,
+        height = 45,
+        border = 2,
         background='#02D7FF',
         activebackground='#24AAFF',
         highlightthickness=2,
@@ -109,22 +115,29 @@ def makeGui():
         highlightcolor='#FFFFFF',
         cursor='hand2',
         command=lambda: makeContacts('outlook_contacts.xlsx', getOutlookCOntacts()))
-    excelToOutlook.grid(row=1, column=0, ipadx=10, pady=5)
+    excelToOutlook.grid(row=1, column=0, ipadx=10, pady=5, sticky=W, padx= 25)
 
     outlookToExcel = tkinter.Button(
-        frame, text = "Make Excel",
+        frame, 
+        image = photoimage,
         background='#02D7FF',
+        width = 40,
+        height = 45,
+        border = 2,
         activebackground='#24AAFF',
         highlightthickness=2,
         highlightbackground='#02D7FF',
         highlightcolor='#FFFFFF',
         cursor='hand2',
         command=lambda: makeExcel(getOutlookCOntacts(), 'outlook_contacts.xlsx'))
-    outlookToExcel.grid(row=2, column=0, ipadx=10, pady=5)
+    outlookToExcel.grid(row=1, column=0, ipadx=10, pady=5, padx= 100)
 
     quitButton = tkinter.Button(
         frame,
         text="Quit",
+        width = 9,
+        height = 1,
+        border = 2,
         background="#FF7F7F",
         activebackground='#D50101',
         highlightthickness=2,
@@ -132,7 +145,7 @@ def makeGui():
         highlightcolor='#FFFFFF',
         cursor='hand2',
         command=guiWindow.quit)
-    quitButton.grid(row=3, column=0, ipadx=10, pady=5)
+    quitButton.grid(row=2, column=0, ipadx=10, pady=5, sticky=W)
 
     guiWindow.mainloop()
 
