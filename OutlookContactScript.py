@@ -90,47 +90,58 @@ def makeContacts(filename, contacts_list):
 def makeGui():
     guiWindow = tkinter.Tk()
     guiWindow.title("Excel to Outlook Contact")
-    guiWindow.configure(background='#02D7FF')
+    guiWindow.geometry("245x265")
+    guiWindow.configure(background='#C0AFE2')
 
     frame = tkinter.Frame(guiWindow, padx=20, pady=30)
     frame.pack(padx=5, pady=5)
     frame.configure(background='#fff')
+    guiWindow.geometry("240x260")
+
+    frame.grid_rowconfigure(0, weight=1)
+    frame.grid_rowconfigure(1, weight=1)
+    frame.grid_rowconfigure(2, weight=1)
+    frame.grid_columnconfigure(0, weight=1)
 
     label = tkinter.Label(frame, text="Contact Functions", background="#fff", fg='#000000', font=('Tahoma', 15, 'bold'))
-    label.grid(row=0, column=0, ipadx=2, pady=15, sticky=W)
+    label.grid(row=0, column=0, pady=10)
 
-    photo = PhotoImage(file = r"C:/Users/jseal/OneDrive\Desktop/Outlook-Contact-Script/images/contact.png")
-    photoimage = photo.subsample(5, 5)  
+    photo = PhotoImage("images\communicate.png")
+    photoimage = photo.subsample(9, 9)  
+
+    middleRow = tkinter.Frame(frame, background="#fff")
+    middleRow.grid(row=1, column=0)
 
     excelToOutlook = tkinter.Button(
-        frame,
+        middleRow,
         image = photoimage,
-        width = 40,
-        height = 45,
+        width = 60,
+        height = 65,
         border = 2,
-        background='#02D7FF',
-        activebackground='#24AAFF',
+        background='#C0AFE2',
+        activebackground='#D6B4FC',
         highlightthickness=2,
         highlightbackground='#02D7FF',
         highlightcolor='#FFFFFF',
         cursor='hand2',
         command=lambda: makeContacts('outlook_contacts.xlsx', getOutlookCOntacts()))
-    excelToOutlook.grid(row=1, column=0, ipadx=10, pady=5, sticky=W, padx= 25)
 
     outlookToExcel = tkinter.Button(
-        frame, 
+        middleRow, 
         image = photoimage,
-        background='#02D7FF',
-        width = 40,
-        height = 45,
+        background='#C0AFE2',
+        width = 60,
+        height = 65,
         border = 2,
-        activebackground='#24AAFF',
+        activebackground='#D6B4FC',
         highlightthickness=2,
         highlightbackground='#02D7FF',
         highlightcolor='#FFFFFF',
         cursor='hand2',
         command=lambda: makeExcel(getOutlookCOntacts(), 'outlook_contacts.xlsx'))
-    outlookToExcel.grid(row=1, column=0, ipadx=10, pady=5, padx= 100)
+
+    excelToOutlook.pack(side=tkinter.LEFT, padx=10, pady=10)
+    outlookToExcel.pack(side=tkinter.LEFT, padx=10, pady=10)
 
     quitButton = tkinter.Button(
         frame,
@@ -145,7 +156,7 @@ def makeGui():
         highlightcolor='#FFFFFF',
         cursor='hand2',
         command=guiWindow.quit)
-    quitButton.grid(row=2, column=0, ipadx=10, pady=5, sticky=W)
+    quitButton.grid(row=2, column=0, pady=16)
 
     guiWindow.mainloop()
 
