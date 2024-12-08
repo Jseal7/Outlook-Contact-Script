@@ -3,7 +3,7 @@ import tkinter.font
 import win32com.client
 from openpyxl import Workbook, load_workbook
 import tkinter
-from tkinter import *
+from tkinter import PhotoImage, messagebox
 
 def getOutlookCOntacts():
     outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
@@ -32,27 +32,45 @@ def getOutlookCOntacts():
 
     return contacts_list
 
-def makeExcel(contacts_list = None, filename = 'outlook_contacts.xlsx', template = False):
-    excelBook = Workbook()
-    currSheet = excelBook.active
-    currSheet.title = "Outlook Contacts"
-    currSheet.append(['Name', 'Email1', 'Email2', 'Email3', 'Business', 'Home', 'Mobile', 'Address', 'Company', 'Job Title'])
-    
-    if contacts_list and not template:
-        for contact in contacts_list:
-            currSheet.append([contact['Name'], contact['Email1'], contact['Email2'], contact['Email3'], contact['Business'], contact['Home'], contact['Mobile'], contact["Address"], contact['Company'], contact['Job Title']])
-    
-    excelBook.save(filename)
-
-def makeContacts(filename, contacts_list):
+#Function that creates a blank excel sheet to be populated. Also displays message whether it was succesful or not and where it was created.
+def createExceltemplate():
     try:
-        excelBook = load_workbook(filename)
-        currSheet = excelBook.active
-    except:
+        fileLocation = os.getcwd()
+        fileName = 'outlook_contacts.xlsx'
+        makeExcel(template=True)
+        tkinter.messagebox.showinfo("Success", f"Template created successfully!\n\nFile Name: {fileName}\nLocation: {fileLocation}")
+    except Exception as e:
+        tkinter.messagebox.showerror("Error", f"An error occurred: {str(e)}")
+
+def makeExcel(contacts_list = None, filename = 'outlook_contacts.xlsx', template = False):
+    try:
         excelBook = Workbook()
         currSheet = excelBook.active
+        currSheet.title = "Outlook Contacts"
+        currSheet.append(['Name', 'Email1', 'Email2', 'Email3', 'Business', 'Home', 'Mobile', 'Address', 'Company', 'Job Title'])
+        
+        if contacts_list and not template:
+            for contact in contacts_list:
+                currSheet.append([contact['Name'], contact['Email1'], contact['Email2'], contact['Email3'], contact['Business'], contact['Home'], contact['Mobile'], contact["Address"], contact['Company'], contact['Job Title']])
+        
         excelBook.save(filename)
 
+        if not template:
+            fileLocation = os.getcwd()
+            fileName = 'outlook_contacts.xlsx'
+            tkinter.messagebox.showinfo("Success", f"File {fileName} populated with Outlook Contacts!\n\nLocation: {fileLocation}")
+
+    except Exception as e:
+        tkinter.messagebox.showerror("Error", f"An error occurred: {str(e)}")
+
+def makeContacts(filename, contacts_list):
+    if not os.path.exists(filename):
+        fileName = 'outlook_contacts.xlsx'
+        tkinter.messagebox.showinfo("No Excel Sheet", f"No file {fileName} exists to populate contacts. Create a \'Template\' and fill in contact info first!")
+        return
+
+    excelBook = load_workbook(filename)
+    currSheet = excelBook.active
 
     outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
     contacts = outlook.GetDefaultFolder(10).Items
@@ -87,6 +105,9 @@ def makeContacts(filename, contacts_list):
                 contactItem.JobTitle = currSheet.cell(row= i, column= 10).value
 
             contactItem.Save()
+
+    fileName = 'outlook_contacts.xlsx'
+    tkinter.messagebox.showinfo("Success", f"Outlook Contacts were populated from file {fileName}!")
 
 #Function to create the GUI Window for usability.
 def makeGui():
@@ -194,7 +215,7 @@ def makeGui():
         highlightcolor='#FFFFFF',
         cursor='hand2',
         font=('Tahoma', 8, 'bold'),
-        command=lambda: makeExcel(template=True))
+        command=lambda: createExceltemplate())
     templateButton.pack(side=tkinter.LEFT, padx=10)
 
     bottomRow = tkinter.Frame(frame, background="#fff")
