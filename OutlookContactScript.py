@@ -87,6 +87,7 @@ def makeContacts(filename, contacts_list):
 
             contactItem.Save()
 
+#Function to create the GUI Window for usability.
 def makeGui():
     guiWindow = tkinter.Tk()
     guiWindow.title("Excel to Outlook Contact")
@@ -106,15 +107,25 @@ def makeGui():
     label = tkinter.Label(frame, text="Contact Functions", background="#fff", fg='#000000', font=('Tahoma', 15, 'bold'))
     label.grid(row=0, column=0, pady=10)
 
-    photo = PhotoImage("images\communicate.png")
-    photoimage = photo.subsample(9, 9)  
+    #Create a base directory for where the script is running
+    baseDirectory = os.path.dirname(os.path.abspath(__file__))
+
+    #Create the two image paths corresponding to the images for each scripts buttons.
+    excelToContactImagePath = os.path.join(baseDirectory, "images", "contact-book.png")
+    excelToContactImagePath = excelToContactImagePath.replace("\\", "/")
+    contactToExcelImagePath = os.path.join(baseDirectory, "images", "database.png")
+    contactToExcelImagePath = contactToExcelImagePath.replace("\\", "/")
+
+    #Changing and resizing into usable image.                       
+    excelToContactImage = (PhotoImage(file=excelToContactImagePath)).subsample(10, 10)
+    contactToExcelImage = (PhotoImage(file=contactToExcelImagePath)).subsample(8, 8)
 
     middleRow = tkinter.Frame(frame, background="#fff")
     middleRow.grid(row=1, column=0)
 
     excelToOutlook = tkinter.Button(
         middleRow,
-        image = photoimage,
+        image = excelToContactImage,
         width = 60,
         height = 65,
         border = 2,
@@ -128,7 +139,7 @@ def makeGui():
 
     outlookToExcel = tkinter.Button(
         middleRow, 
-        image = photoimage,
+        image = contactToExcelImage,
         background='#C0AFE2',
         width = 60,
         height = 65,
