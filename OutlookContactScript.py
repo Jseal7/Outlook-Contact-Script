@@ -32,14 +32,15 @@ def getOutlookCOntacts():
 
     return contacts_list
 
-def makeExcel(contacts_list, filename):
+def makeExcel(contacts_list = None, filename = 'outlook_contacts.xlsx', template = False):
     excelBook = Workbook()
     currSheet = excelBook.active
     currSheet.title = "Outlook Contacts"
     currSheet.append(['Name', 'Email1', 'Email2', 'Email3', 'Business', 'Home', 'Mobile', 'Address', 'Company', 'Job Title'])
     
-    for contact in contacts_list:
-        currSheet.append([contact['Name'], contact['Email1'], contact['Email2'], contact['Email3'], contact['Business'], contact['Home'], contact['Mobile'], contact["Address"], contact['Company'], contact['Job Title']])
+    if contacts_list and not template:
+        for contact in contacts_list:
+            currSheet.append([contact['Name'], contact['Email1'], contact['Email2'], contact['Email3'], contact['Business'], contact['Home'], contact['Mobile'], contact["Address"], contact['Company'], contact['Job Title']])
     
     excelBook.save(filename)
 
@@ -102,6 +103,7 @@ def makeGui():
     frame.grid_rowconfigure(1, weight=1)
     frame.grid_rowconfigure(2, weight=1)
     frame.grid_rowconfigure(3, weight=1)
+    frame.grid_rowconfigure(4, weight=1)
     frame.grid_columnconfigure(0, weight=1)
 
     #Create a base directory for where the script is running
@@ -140,6 +142,7 @@ def makeGui():
         highlightcolor='#FFFFFF',
         cursor='hand2',
         command=lambda: makeContacts('outlook_contacts.xlsx', getOutlookCOntacts()))
+    excelToOutlookButton.pack(side=tkinter.LEFT, padx=10, pady=7)
 
     outlookToExcelButtton = tkinter.Button(
         secondRow, 
@@ -154,8 +157,6 @@ def makeGui():
         highlightcolor='#FFFFFF',
         cursor='hand2',
         command=lambda: makeExcel(getOutlookCOntacts(), 'outlook_contacts.xlsx'))
-
-    excelToOutlookButton.pack(side=tkinter.LEFT, padx=10, pady=7)
     outlookToExcelButtton.pack(side=tkinter.LEFT, padx=10, pady=7)
 
     thirdRow = tkinter.Frame(frame, background="#fff")
@@ -167,6 +168,7 @@ def makeGui():
         height=3,
         background="#fff", fg='#000000',
         font=('Tahoma', 8, 'bold'))
+    excelToOutlookLabel.pack(side=tkinter.LEFT, padx=17, pady=5)
 
     outlookToExcelLabel = tkinter.Label(
         thirdRow,
@@ -174,15 +176,35 @@ def makeGui():
         height=3,
         background="#fff", fg='#000000',
         font=('Tahoma', 8, 'bold'))
-
-    excelToOutlookLabel.pack(side=tkinter.LEFT, padx=17, pady=5)
     outlookToExcelLabel.pack(side=tkinter.LEFT, padx=17, pady=5)
 
+    thirdRow = tkinter.Frame(frame, background="#fff")
+    thirdRow.grid(row=3, column=0, pady=8)
+
+    templateButton = tkinter.Button(
+        thirdRow,
+        text="Excel Template",
+        width=15,
+        height=2,
+        border=2,
+        background="#A7D9A3",
+        activebackground='#92D191',
+        highlightthickness=2,
+        highlightbackground='#02D7FF',
+        highlightcolor='#FFFFFF',
+        cursor='hand2',
+        font=('Tahoma', 8, 'bold'),
+        command=lambda: makeExcel(template=True))
+    templateButton.pack(side=tkinter.LEFT, padx=10)
+
+    bottomRow = tkinter.Frame(frame, background="#fff")
+    bottomRow.grid(row=4, column=0, pady=8)
+
     quitButton = tkinter.Button(
-        frame,
+        bottomRow,
         text="Quit",
         width = 9,
-        height = 1,
+        height = 2,
         border = 2,
         background="#FF7F7F",
         activebackground='#D50101',
@@ -192,7 +214,7 @@ def makeGui():
         cursor='hand2',
         font=('Tahoma', 8, 'bold'),
         command=guiWindow.quit)
-    quitButton.grid(row=3, column=0, pady=8)
+    quitButton.pack(side=tkinter.LEFT, padx=10)
 
     guiWindow.mainloop()
 
