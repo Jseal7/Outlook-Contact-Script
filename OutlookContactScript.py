@@ -91,21 +91,18 @@ def makeContacts(filename, contacts_list):
 def makeGui():
     guiWindow = tkinter.Tk()
     guiWindow.title("Excel to Outlook Contact")
-    guiWindow.geometry("245x265")
+    guiWindow.geometry("250x310")
     guiWindow.configure(background='#C0AFE2')
 
     frame = tkinter.Frame(guiWindow, padx=20, pady=30)
     frame.pack(padx=5, pady=5)
     frame.configure(background='#fff')
-    guiWindow.geometry("240x260")
 
     frame.grid_rowconfigure(0, weight=1)
     frame.grid_rowconfigure(1, weight=1)
     frame.grid_rowconfigure(2, weight=1)
+    frame.grid_rowconfigure(3, weight=1)
     frame.grid_columnconfigure(0, weight=1)
-
-    label = tkinter.Label(frame, text="Contact Functions", background="#fff", fg='#000000', font=('Tahoma', 15, 'bold'))
-    label.grid(row=0, column=0, pady=10)
 
     #Create a base directory for where the script is running
     baseDirectory = os.path.dirname(os.path.abspath(__file__))
@@ -120,15 +117,22 @@ def makeGui():
     excelToContactImage = (PhotoImage(file=excelToContactImagePath)).subsample(10, 10)
     contactToExcelImage = (PhotoImage(file=contactToExcelImagePath)).subsample(8, 8)
 
-    middleRow = tkinter.Frame(frame, background="#fff")
-    middleRow.grid(row=1, column=0)
+    scriptTitle = tkinter.Label(
+        frame,
+        text="Contact Functions",
+        background="#fff", fg='#000000',
+        font=('Tahoma', 15, 'bold'))
+    scriptTitle.grid(row=0, column=0, pady=10)
 
-    excelToOutlook = tkinter.Button(
-        middleRow,
+    secondRow = tkinter.Frame(frame, background="#fff")
+    secondRow.grid(row=1, column=0)
+
+    excelToOutlookButton = tkinter.Button(
+        secondRow,
         image = excelToContactImage,
         width = 60,
         height = 65,
-        border = 2,
+        border = 4,
         background='#C0AFE2',
         activebackground='#D6B4FC',
         highlightthickness=2,
@@ -137,13 +141,13 @@ def makeGui():
         cursor='hand2',
         command=lambda: makeContacts('outlook_contacts.xlsx', getOutlookCOntacts()))
 
-    outlookToExcel = tkinter.Button(
-        middleRow, 
+    outlookToExcelButtton = tkinter.Button(
+        secondRow, 
         image = contactToExcelImage,
         background='#C0AFE2',
         width = 60,
         height = 65,
-        border = 2,
+        border = 4,
         activebackground='#D6B4FC',
         highlightthickness=2,
         highlightbackground='#02D7FF',
@@ -151,8 +155,28 @@ def makeGui():
         cursor='hand2',
         command=lambda: makeExcel(getOutlookCOntacts(), 'outlook_contacts.xlsx'))
 
-    excelToOutlook.pack(side=tkinter.LEFT, padx=10, pady=10)
-    outlookToExcel.pack(side=tkinter.LEFT, padx=10, pady=10)
+    excelToOutlookButton.pack(side=tkinter.LEFT, padx=10, pady=7)
+    outlookToExcelButtton.pack(side=tkinter.LEFT, padx=10, pady=7)
+
+    thirdRow = tkinter.Frame(frame, background="#fff")
+    thirdRow.grid(row=2, column=0)
+
+    excelToOutlookLabel = tkinter.Label(
+        thirdRow,
+        text="Create\nContacts",
+        height=3,
+        background="#fff", fg='#000000',
+        font=('Tahoma', 8, 'bold'))
+
+    outlookToExcelLabel = tkinter.Label(
+        thirdRow,
+        text="Populate\nSheet",
+        height=3,
+        background="#fff", fg='#000000',
+        font=('Tahoma', 8, 'bold'))
+
+    excelToOutlookLabel.pack(side=tkinter.LEFT, padx=17, pady=5)
+    outlookToExcelLabel.pack(side=tkinter.LEFT, padx=17, pady=5)
 
     quitButton = tkinter.Button(
         frame,
@@ -166,14 +190,15 @@ def makeGui():
         highlightbackground='#02D7FF',
         highlightcolor='#FFFFFF',
         cursor='hand2',
+        font=('Tahoma', 8, 'bold'),
         command=guiWindow.quit)
-    quitButton.grid(row=2, column=0, pady=16)
+    quitButton.grid(row=3, column=0, pady=8)
 
     guiWindow.mainloop()
 
 
 if __name__ == "__main__":
-    home_dir = os.path.expanduser("~")
-    desktop_path = os.path.join(home_dir, "OneDrive", "Desktop")
-    os.chdir(desktop_path)
+    homeDirectory = os.path.expanduser("~")
+    desktopPath = os.path.join(homeDirectory, "OneDrive", "Desktop")
+    os.chdir(desktopPath)
     makeGui()
