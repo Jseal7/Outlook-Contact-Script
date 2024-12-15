@@ -241,7 +241,6 @@ def makeGui():
 
 
 if __name__ == "__main__":
-    homeDirectory = os.path.expanduser("~")
-    desktopPath = os.path.join(homeDirectory, "OneDrive", "Desktop")
+    desktopPath = os.path.join(os.environ['USERPROFILE'], 'Desktop')
     os.chdir(desktopPath)
     makeGui()
