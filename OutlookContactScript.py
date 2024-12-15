@@ -4,6 +4,7 @@ import win32com.client
 from openpyxl import Workbook, load_workbook
 import tkinter
 from tkinter import PhotoImage, messagebox
+import customtkinter
 
 def getOutlookCOntacts():
     outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
@@ -111,10 +112,9 @@ def makeContacts(filename, contacts_list):
 
 #Function to create the GUI Window for usability.
 def makeGui():
-    guiWindow = tkinter.Tk()
+    guiWindow = customtkinter.CTk(fg_color='#f7072f')
     guiWindow.title("Excel to Outlook Contact")
-    guiWindow.geometry("250x310")
-    guiWindow.configure(background='#C0AFE2')
+    guiWindow.geometry("240x355")
 
     frame = tkinter.Frame(guiWindow, padx=20, pady=30)
     frame.pack(padx=5, pady=5)
@@ -144,7 +144,7 @@ def makeGui():
         frame,
         text="Contact Functions",
         background="#fff", fg='#000000',
-        font=('Tahoma', 15, 'bold'))
+        font=('Arial', 15, 'bold'))
     scriptTitle.grid(row=0, column=0, pady=10)
 
     secondRow = tkinter.Frame(frame, background="#fff")
@@ -157,10 +157,8 @@ def makeGui():
         height = 65,
         border = 4,
         background='#C0AFE2',
+        foreground='#000',
         activebackground='#D6B4FC',
-        highlightthickness=2,
-        highlightbackground='#02D7FF',
-        highlightcolor='#FFFFFF',
         cursor='hand2',
         command=lambda: makeContacts('outlook_contacts.xlsx', getOutlookCOntacts()))
     excelToOutlookButton.pack(side=tkinter.LEFT, padx=10, pady=7)
@@ -173,9 +171,6 @@ def makeGui():
         height = 65,
         border = 4,
         activebackground='#D6B4FC',
-        highlightthickness=2,
-        highlightbackground='#02D7FF',
-        highlightcolor='#FFFFFF',
         cursor='hand2',
         command=lambda: makeExcel(getOutlookCOntacts(), 'outlook_contacts.xlsx'))
     outlookToExcelButtton.pack(side=tkinter.LEFT, padx=10, pady=7)
@@ -183,57 +178,53 @@ def makeGui():
     thirdRow = tkinter.Frame(frame, background="#fff")
     thirdRow.grid(row=2, column=0)
 
-    excelToOutlookLabel = tkinter.Label(
+    excelToOutlookLabel = customtkinter.CTkLabel(
         thirdRow,
         text="Create\nContacts",
         height=3,
-        background="#fff", fg='#000000',
-        font=('Tahoma', 8, 'bold'))
+        fg_color='#fff',
+        text_color='#000',
+        font=('Arial', 11, 'bold'))
     excelToOutlookLabel.pack(side=tkinter.LEFT, padx=17, pady=5)
 
-    outlookToExcelLabel = tkinter.Label(
+    outlookToExcelLabel = customtkinter.CTkLabel(
         thirdRow,
         text="Populate\nSheet",
         height=3,
-        background="#fff", fg='#000000',
-        font=('Tahoma', 8, 'bold'))
+        fg_color='#fff',
+        text_color='#000',
+        font=('Arial', 11, 'bold'))
     outlookToExcelLabel.pack(side=tkinter.LEFT, padx=17, pady=5)
 
     thirdRow = tkinter.Frame(frame, background="#fff")
     thirdRow.grid(row=3, column=0, pady=8)
 
-    templateButton = tkinter.Button(
+    templateButton = customtkinter.CTkButton(
         thirdRow,
         text="Excel Template",
-        width=15,
-        height=2,
-        border=2,
-        background="#A7D9A3",
-        activebackground='#92D191',
-        highlightthickness=2,
-        highlightbackground='#02D7FF',
-        highlightcolor='#FFFFFF',
+        width=100,
+        height=40,
+        fg_color='#0ec940',
+        hover_color='#34ed66',
+        corner_radius=10,
         cursor='hand2',
-        font=('Tahoma', 8, 'bold'),
+        font=('Arial', 10, 'bold'),
         command=lambda: createExceltemplate())
     templateButton.pack(side=tkinter.LEFT, padx=10)
 
     bottomRow = tkinter.Frame(frame, background="#fff")
     bottomRow.grid(row=4, column=0, pady=8)
 
-    quitButton = tkinter.Button(
+    quitButton = customtkinter.CTkButton(
         bottomRow,
         text="Quit",
-        width = 9,
-        height = 2,
-        border = 2,
-        background="#FF7F7F",
-        activebackground='#D50101',
-        highlightthickness=2,
-        highlightbackground='#02D7FF',
-        highlightcolor='#FFFFFF',
+        width = 75,
+        height = 35,
+        fg_color='#de1d20',
+        hover_color='#f73135',
+        corner_radius=10,
         cursor='hand2',
-        font=('Tahoma', 8, 'bold'),
+        font=('Arial', 8, 'bold'),
         command=guiWindow.quit)
     quitButton.pack(side=tkinter.LEFT, padx=10)
 
