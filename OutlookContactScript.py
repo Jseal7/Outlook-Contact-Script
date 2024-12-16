@@ -3,11 +3,17 @@ import tkinter.font
 import win32com.client
 from openpyxl import Workbook, load_workbook
 import tkinter
-from tkinter import PhotoImage, messagebox
 import customtkinter
 from PIL import Image
 
-def getOutlookCOntacts():
+def getOutlookContacts():
+    """
+    Retrieves contacts from users Outlook Contact Book.
+
+    Returns:
+        list: List of Dictionaries containing contacts information.  
+    """
+
     outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
     contacts = outlook.GetDefaultFolder(10).Items
     contacts_list = []
@@ -34,8 +40,17 @@ def getOutlookCOntacts():
 
     return contacts_list
 
-#Function that creates a blank excel sheet to be populated. Also displays message whether it was succesful or not and where it was created.
 def createExceltemplate():
+    """
+    Creates a blank excel sheet to be populated.
+
+    Returns:
+        messagebox: Displays the template creation was successful with the files name and location.
+
+    Raises:
+        Exception: If any error occurs that prevents the template creation.
+    """
+
     try:
         fileLocation = os.getcwd()
         fileName = 'outlook_contacts.xlsx'
@@ -176,7 +191,7 @@ def makeGui():
         hover_color='#b5a48d',
         text='',
         cursor='hand2',
-        command=lambda: makeContacts('outlook_contacts.xlsx', getOutlookCOntacts()))
+        command=lambda: makeContacts('outlook_contacts.xlsx', getOutlookContacts()))
     excelToOutlookButton.pack(side=tkinter.LEFT, padx=10, pady=(7,0))
 
     outlookToExcelButton = customtkinter.CTkButton(
@@ -190,7 +205,7 @@ def makeGui():
         hover_color='#b5a48d',
         text = '',
         cursor = 'hand2',
-        command = lambda: makeExcel(getOutlookCOntacts(), 'outlook_contacts.xlsx'))
+        command = lambda: makeExcel(getOutlookContacts(), 'outlook_contacts.xlsx'))
     outlookToExcelButton.pack(side=tkinter.LEFT, padx=10, pady=(7,0))
 
     thirdRow = customtkinter.CTkFrame(frame, fg_color="#edd8bc")
