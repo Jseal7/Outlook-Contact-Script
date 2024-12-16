@@ -5,6 +5,7 @@ from openpyxl import Workbook, load_workbook
 import tkinter
 from tkinter import PhotoImage, messagebox
 import customtkinter
+from PIL import Image
 
 def getOutlookCOntacts():
     outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
@@ -116,9 +117,8 @@ def makeGui():
     guiWindow.title("Excel to Outlook Contact")
     guiWindow.geometry("240x355")
 
-    frame = tkinter.Frame(guiWindow, padx=20, pady=30)
-    frame.pack(padx=5, pady=5)
-    frame.configure(background='#edd8bc')
+    frame = customtkinter.CTkFrame(guiWindow, fg_color='#edd8bc', width=230, height=345)
+    frame.pack(fill="both", expand=True, padx=10, pady=10)
 
     #Create a base directory for where the script is running
     baseDirectory = os.path.dirname(os.path.abspath(__file__))
@@ -128,10 +128,10 @@ def makeGui():
     excelToContactImagePath = excelToContactImagePath.replace("\\", "/")
     contactToExcelImagePath = os.path.join(baseDirectory, "images", "database.png")
     contactToExcelImagePath = contactToExcelImagePath.replace("\\", "/")
-
+    
     #Changing and resizing into usable image.                       
-    excelToContactImage = (PhotoImage(file=excelToContactImagePath)).subsample(10, 10)
-    contactToExcelImage = (PhotoImage(file=contactToExcelImagePath)).subsample(8, 8)
+    excelToContactImage = customtkinter.CTkImage(light_image=Image.open(excelToContactImagePath), size=(47,47))
+    contactToExcelImage = customtkinter.CTkImage(light_image=Image.open(contactToExcelImagePath), size=(53,53))
 
     scriptTitle = customtkinter.CTkLabel(
         frame,
@@ -141,33 +141,36 @@ def makeGui():
         font=('Arial', 21, 'bold'))
     scriptTitle.grid(row=0, column=0, pady=10)
 
-    secondRow = tkinter.Frame(frame, background="#edd8bc")
+    secondRow = customtkinter.CTkFrame(frame, fg_color="#edd8bc")
     secondRow.grid(row=1, column=0)
 
-    excelToOutlookButton = tkinter.Button(
+    excelToOutlookButton = customtkinter.CTkButton(
         secondRow,
         image = excelToContactImage,
         width = 60,
         height = 65,
-        border = 4,
-        background='#66473c',
-        foreground='#000',
-        activebackground='#D6B4FC',
+        border_color = '#49332b',
+        border_width = 3,
+        fg_color='#c9b69d',
+        hover_color='#b5a48d',
+        text='',
         cursor='hand2',
         command=lambda: makeContacts('outlook_contacts.xlsx', getOutlookCOntacts()))
     excelToOutlookButton.pack(side=tkinter.LEFT, padx=10, pady=7)
 
-    outlookToExcelButtton = tkinter.Button(
+    outlookToExcelButton = customtkinter.CTkButton(
         secondRow, 
         image = contactToExcelImage,
-        background='#66473c',
         width = 60,
         height = 65,
-        border = 4,
-        activebackground='#D6B4FC',
-        cursor='hand2',
-        command=lambda: makeExcel(getOutlookCOntacts(), 'outlook_contacts.xlsx'))
-    outlookToExcelButtton.pack(side=tkinter.LEFT, padx=10, pady=7)
+        border_color = '#49332b',
+        border_width = 3,
+        fg_color='#c9b69d',
+        hover_color='#b5a48d',
+        text = '',
+        cursor = 'hand2',
+        command = lambda: makeExcel(getOutlookCOntacts(), 'outlook_contacts.xlsx'))
+    outlookToExcelButton.pack(side=tkinter.LEFT, padx=10, pady=7)
 
     thirdRow = customtkinter.CTkFrame(frame, fg_color="#edd8bc")
     thirdRow.grid(row=2, column=0)
@@ -177,7 +180,7 @@ def makeGui():
         text="Create\nContacts",
         height=3,
         fg_color='#edd8bc',
-        text_color='#49332b',
+        text_color='#33231e',
         font=('Arial', 12, 'bold'))
     excelToOutlookLabel.pack(side=tkinter.LEFT, padx=17, pady=5)
 
@@ -186,7 +189,7 @@ def makeGui():
         text="Populate\nSheet",
         height=3,
         fg_color='#edd8bc',
-        text_color='#49332b',
+        text_color='#33231e',
         font=('Arial', 12, 'bold'))
     outlookToExcelLabel.pack(side=tkinter.LEFT, padx=17, pady=5)
 
