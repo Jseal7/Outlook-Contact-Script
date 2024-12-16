@@ -115,7 +115,7 @@ def makeContacts(filename, contacts_list):
 def makeGui():
     guiWindow = customtkinter.CTk(fg_color='#49332b')
     guiWindow.title("Excel to Outlook Contact")
-    guiWindow.geometry("250x380")
+    guiWindow.geometry("250x315")
     guiWindow.resizable(False, False)
     guiWindow.attributes("-fullscreen", False)
 
@@ -138,9 +138,6 @@ def makeGui():
     templateImagePath = os.path.join(baseDirectory, "images", "template.png")
     templateImagePath = templateImagePath.replace("\\", "/")
 
-    duplicateContactImagePath = os.path.join(baseDirectory, "images", "duplicate.png")
-    duplicateContactImagePath = duplicateContactImagePath.replace("\\", "/")
-
     quitImagePath = os.path.join(baseDirectory, "images", "quit.png")
     quitImagePath = quitImagePath.replace("\\", "/")
     
@@ -148,19 +145,25 @@ def makeGui():
     excelToContactImage = customtkinter.CTkImage(light_image=Image.open(excelToContactImagePath), size=(48, 48))
     contactToExcelImage = customtkinter.CTkImage(light_image=Image.open(contactToExcelImagePath), size=(48, 48))
     templateImage = customtkinter.CTkImage(light_image=Image.open(templateImagePath), size=(48, 48))
-    duplicateContactImage = customtkinter.CTkImage(light_image=Image.open(duplicateContactImagePath), size=(48, 48))
-    quitImage = customtkinter.CTkImage(light_image=Image.open(quitImagePath), size=(24, 24))
+    quitImage = customtkinter.CTkImage(light_image=Image.open(quitImagePath), size=(48, 48))
 
     scriptTitle = customtkinter.CTkLabel(
         frame,
-        text="Contact\nFunctions",
+        text="Contact Functions",
         fg_color="#edd8bc",
         text_color='#30221d',
         font=('Arial', 22, 'bold'))
-    scriptTitle.grid(row=0, column=0, pady=10)
+    scriptTitle.grid(row=0, column=0, pady=(10, 0))
+
+    titleUnderline = customtkinter.CTkFrame(
+        frame,
+        fg_color="#30221d",
+        height=2,
+        width=200)
+    titleUnderline.grid(row=1, column=0, sticky="n")
 
     secondRow = customtkinter.CTkFrame(frame, fg_color="#edd8bc")
-    secondRow.grid(row=1, column=0)
+    secondRow.grid(row=2, column=0)
 
     excelToOutlookButton = customtkinter.CTkButton(
         secondRow,
@@ -191,7 +194,7 @@ def makeGui():
     outlookToExcelButton.pack(side=tkinter.LEFT, padx=10, pady=(7,0))
 
     thirdRow = customtkinter.CTkFrame(frame, fg_color="#edd8bc")
-    thirdRow.grid(row=2, column=0)
+    thirdRow.grid(row=3, column=0)
 
     excelToOutlookLabel = customtkinter.CTkLabel(
         thirdRow,
@@ -212,7 +215,7 @@ def makeGui():
     outlookToExcelLabel.pack(side=tkinter.LEFT, padx=17, pady=(0,10))
 
     fourthRow = customtkinter.CTkFrame(frame, fg_color="#edd8bc")
-    fourthRow.grid(row=3, column=0)
+    fourthRow.grid(row=4, column=0)
 
     templateButton = customtkinter.CTkButton(
         fourthRow,
@@ -228,21 +231,22 @@ def makeGui():
         command=lambda: createExceltemplate())
     templateButton.pack(side=tkinter.LEFT, padx=10, pady=(7,0))
 
-    duplicateButton = customtkinter.CTkButton(
+    quitButton = customtkinter.CTkButton(
         fourthRow,
-        image = duplicateContactImage,
+        image = quitImage,
         width = 65,
         height = 65,
-        border_color = '#49332b',
+        border_color = '#850918',
         border_width = 3,
-        fg_color='#c9b69d',
-        hover_color='#b5a48d',
+        fg_color='#db8f91',
+        hover_color='#e36f72',
         text='',
-        cursor='hand2')
-    duplicateButton.pack(side=tkinter.LEFT, padx=10, pady=(7,0))
+        cursor='hand2',
+        command=guiWindow.quit)
+    quitButton.pack(side=tkinter.LEFT, padx=10, pady=(7,0))
 
     fifthRow = customtkinter.CTkFrame(frame, fg_color="#edd8bc")
-    fifthRow.grid(row=4, column=0)
+    fifthRow.grid(row=5, column=0)
 
     templateLabel = customtkinter.CTkLabel(
         fifthRow,
@@ -253,34 +257,14 @@ def makeGui():
         font=('Arial', 12, 'bold'))
     templateLabel.pack(side=tkinter.LEFT, padx=17, pady=(0,10))
 
-    duplicateContactLabel = customtkinter.CTkLabel(
+    quitLabel = customtkinter.CTkLabel(
         fifthRow,
-        text="Find\nDuplicates",
+        text="Quit\nProgram",
         height=3,
         fg_color='#edd8bc',
         text_color='#33231e',
         font=('Arial', 12, 'bold'))
-    duplicateContactLabel.pack(side=tkinter.LEFT, padx=17, pady=(0,10))
-
-    bottomRow = customtkinter.CTkFrame(frame, fg_color="#edd8bc")
-    bottomRow.grid(row=5, column=0)
-
-    quitButton = customtkinter.CTkButton(
-        bottomRow,
-        text='',
-        image=quitImage,
-        width = 45,
-        height = 45,
-        fg_color='#edd8bc',
-        hover_color='#e36f72',
-        border_color='#850918',
-        border_width=3,
-        text_color='#850918',
-        corner_radius=15,
-        cursor='hand2',
-        font=('Arial', 11, 'bold'),
-        command=guiWindow.quit)
-    quitButton.pack(side=tkinter.LEFT, pady=(15,7))
+    quitLabel.pack(side=tkinter.LEFT, padx=17, pady=(0,10))
 
     guiWindow.mainloop()
 
